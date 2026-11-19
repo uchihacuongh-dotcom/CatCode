@@ -329,8 +329,8 @@ export function createLevel() {
           'hint'
         );
 
-        editor.setLanguage('js');
-        editor.setCode(
+        const templates = {
+          js:
 `// Cây cầu chỉ số
 // Hãy viết hàm getThirdElement(arr) để nó trả về arr[2].
 // Khi vượt qua các bài kiểm tra, cổng trên cầu sẽ mở.
@@ -341,12 +341,28 @@ function getThirdElement(arr) {
 
 // Thử nhanh:
 // console.log(getThirdElement([10, 20, 30, 40, 50])); // kết quả phải là 30
+`,
+          python:
+`# Cây cầu chỉ số
+# Hãy viết hàm get_third_element(arr) để nó trả về arr[2].
 
 def get_third_element(arr):
-  # TODO: viết bằng Python
-  # return arr[2]
-`
-        );
+  # TODO: trả về phần tử thứ ba (chỉ số 2)
+  pass
+`,
+          cpp:
+`// Cây cầu chỉ số
+// Hãy viết hàm getThirdElement để nó trả về arr[2].
+// (Không cần viết hàm main, game sẽ tự chạy các bài kiểm tra.)
+int getThirdElement(int arr[], int n) {
+  // TODO: trả về phần tử thứ ba (chỉ số 2)
+  return 0;
+}
+`,
+        };
+        editor.setTemplates(templates);
+        editor.setLanguage('js');
+        editor.setCode(templates.js);
       }
     },
 
@@ -434,7 +450,7 @@ def get_third_element(arr):
       }
     },
 
-    async runUserCode({ code, lang, editor, ensurePyodide }) {
+    async runUserCode({ code, lang, editor, ensurePyodide, runCpp }) {
       const tests = [
         { input: [10, 20, 30, 40, 50], expected: 30 },
         { input: [1, 2, 3], expected: 3 },
@@ -444,6 +460,33 @@ def get_third_element(arr):
       editor.printOutput('Đang chạy các bài kiểm tra của màn...', 'dim');
 
       try {
+        if (lang === 'cpp') {
+          // Ghép code của bạn với hàm main tự sinh để chạy các bài kiểm tra
+          const harness = tests
+            .map((t) => { const n = t.input.length; return `  { int a[${n + 1}] = {${[...t.input, 0].join(', ')}}; cout << getThirdElement(a, ${n}) << endl; }`; })
+            .join('\n');
+          const full =
+            '#include <iostream>\nusing namespace std;\n' +
+            code +
+            `\nint main() {\n${harness}\n  return 0;\n}\n`;
+          const { out } = runCpp(full);
+          const lines = out.trim().split('\n');
+          for (let i = 0; i < tests.length; i++) {
+            const t = tests[i];
+            if (String(lines[i]).trim() !== String(t.expected)) {
+              editor.printOutput(
+                `Sai rồi: getThirdElement({${t.input.join(', ')}}, ${t.input.length}) ` +
+                  `cần ra ${t.expected}, nhưng nhận được ${lines[i] === undefined ? '(không có kết quả)' : lines[i]}`,
+                'error'
+              );
+              return;
+            }
+          }
+          editor.printOutput('Đúng hết các bài kiểm tra C++! Cổng trên cầu đã mở.', 'success');
+          solvedCode = true;
+          return;
+        }
+
         if (lang === 'python') {
           const pyodide = await ensurePyodide();
           await pyodide.runPythonAsync(code + '\n');
@@ -556,6 +599,10 @@ def get_third_element(arr):
       );
       editor.printOutput(
         'Python: def get_third_element(arr): return arr[2]',
+        'dim'
+      );
+      editor.printOutput(
+        'C++: int getThirdElement(int arr[], int n) { return arr[2]; }',
         'dim'
       );
       editor.printOutput(

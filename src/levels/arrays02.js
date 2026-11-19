@@ -50,13 +50,13 @@ export function createLevel() {
           'hint'
         );
         editor.printOutput(
-          'Bạn có thể dùng JavaScript hoặc Python (đổi ở góc trên bên phải bảng code).',
+          'Bạn có thể dùng JavaScript, Python hoặc C++ (đổi ở góc trên bên phải bảng code).',
           'dim'
         );
 
-        // Default JS template
-        editor.setLanguage('js');
-        editor.setCode(
+        // Mẫu code cho từng ngôn ngữ
+        const templates = {
+          js:
 `// Hãy viết hàm này để nó trả về
 // tổng của tất cả phần tử trong mảng.
 function sumArray(arr) {
@@ -64,8 +64,27 @@ function sumArray(arr) {
 }
 
 // Bạn có thể tự thử:
-console.log(sumArray([1, 2, 3])); // 6`
-        );
+console.log(sumArray([1, 2, 3])); // 6`,
+          python:
+`# Hãy viết hàm này để nó trả về
+# tổng của tất cả phần tử trong mảng.
+def sum_array(arr):
+  # TODO
+  pass
+`,
+          cpp:
+`// Hãy viết hàm này để nó trả về
+// tổng của n phần tử đầu tiên trong mảng arr.
+// (Không cần viết hàm main, game sẽ tự chạy các bài kiểm tra.)
+int sumArray(int arr[], int n) {
+  // TODO
+  return 0;
+}
+`,
+        };
+        editor.setTemplates(templates);
+        editor.setLanguage('js');
+        editor.setCode(templates.js);
       }
     },
 
@@ -82,7 +101,7 @@ console.log(sumArray([1, 2, 3])); // 6`
       }
     },
 
-    async runUserCode({ code, lang, editor, ensurePyodide }) {
+    async runUserCode({ code, lang, editor, ensurePyodide, runCpp }) {
       const tests = [
         { input: [], expected: 0 },
         { input: [1], expected: 1 },
@@ -94,6 +113,37 @@ console.log(sumArray([1, 2, 3])); // 6`
       editor.printOutput('Đang chạy các bài kiểm tra cho hàm tính tổng...', 'dim');
 
       try {
+        if (lang === 'cpp') {
+          // Ghép code của bạn với hàm main tự sinh để chạy các bài kiểm tra
+          const harness = tests
+            .map((t) => {
+              const n = t.input.length;
+              // JSCPP lỗi với mảng 1 phần tử có giá trị khác 0, nên thêm 1 phần tử đệm
+              const init = [...t.input, 0].join(', ');
+              return `  { int a[${n + 1}] = {${init}}; cout << sumArray(a, ${n}) << endl; }`;
+            })
+            .join('\n');
+          const full =
+            '#include <iostream>\nusing namespace std;\n' +
+            code +
+            `\nint main() {\n${harness}\n  return 0;\n}\n`;
+          const { out } = runCpp(full);
+          const lines = out.trim().split('\n');
+          for (let i = 0; i < tests.length; i++) {
+            const t = tests[i];
+            if (String(lines[i]).trim() !== String(t.expected)) {
+              editor.printOutput(
+                `Sai rồi: sumArray({${t.input.join(', ')}}, ${t.input.length}) ` +
+                  `cần ra ${t.expected}, nhưng nhận được ${lines[i] === undefined ? '(không có kết quả)' : lines[i]}`,
+                'error'
+              );
+              return;
+            }
+          }
+          editor.printOutput('Đúng hết! Hàm sumArray (C++) vượt qua mọi bài kiểm tra!', 'success');
+          return;
+        }
+
         if (lang === 'python') {
           const pyodide = await ensurePyodide();
 
@@ -157,6 +207,10 @@ console.log(sumArray([1, 2, 3])); // 6`
       );
       editor.printOutput(
         'Python: s = 0; for x in arr: s += x',
+        'dim'
+      );
+      editor.printOutput(
+        'C++: int s = 0; for (int i = 0; i < n; i++) s += arr[i]; return s;',
         'dim'
       );
     },

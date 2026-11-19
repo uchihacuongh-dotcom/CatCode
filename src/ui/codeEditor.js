@@ -37,6 +37,7 @@ export class CodeEditor {
     this.hintHandler = null;
     this.explainHandler = null;
     this.collapsed = false;
+    this.templates = null;
 
     this._bind();
   }
@@ -97,13 +98,31 @@ export class CodeEditor {
     return this.cm ? this.cm.getValue() : '';
   }
 
+  // templates: { js, python, cpp } - code mẫu cho từng ngôn ngữ của màn hiện tại
+  setTemplates(templates) {
+    this.templates = templates || null;
+  }
+
   setLanguage(lang) {
+    const prev = this.currentLang;
     this.currentLang = lang;
+    if (this.langSelect && this.langSelect.value !== lang) this.langSelect.value = lang;
     if (!this.cm) return;
     if (lang === 'python') {
       this.cm.setOption('mode', 'python');
+    } else if (lang === 'cpp') {
+      this.cm.setOption('mode', 'text/x-c++src');
     } else {
       this.cm.setOption('mode', 'javascript');
+    }
+
+    // Đổi sang mẫu của ngôn ngữ mới nếu người học chưa sửa mẫu cũ
+    if (this.templates && prev !== lang && this.templates[lang] != null) {
+      const cur = this.getCode().trim();
+      const prevTpl = this.templates[prev];
+      if (cur === '' || (prevTpl != null && cur === prevTpl.trim())) {
+        this.setCode(this.templates[lang]);
+      }
     }
   }
 

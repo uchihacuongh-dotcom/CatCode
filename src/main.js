@@ -88,6 +88,22 @@ async function ensurePyodide() {
   return pyodideReadyPromise;
 }
 
+// --- Trình chạy C++ (JSCPP) ---
+// Chạy chương trình C++ có hàm main(); trả về { out, code }.
+// Lưu ý: JSCPP chỉ hỗ trợ một phần C++ (iostream, cmath, cstring, cstdlib, mảng, con trỏ...). Chưa có vector/string của STL.
+function runCpp(code, stdin = '') {
+  const lib = window.JSCPPLib;
+  if (!lib || typeof lib.run !== 'function') {
+    throw new Error('Chưa tải được trình chạy C++ (vendor/jscpp.min.js).');
+  }
+  let out = '';
+  const exitCode = lib.run(code, stdin, {
+    stdio: { write: (s) => { out += s; } },
+    maxTimeout: 5000, // tự dừng nếu chạy quá 5 giây (vòng lặp vô hạn)
+  });
+  return { out, code: exitCode };
+}
+
 // 8) Wire editor buttons: Run with level-aware test harness
 
 editor.onRun(async (code, lang) => {
@@ -97,7 +113,7 @@ editor.onRun(async (code, lang) => {
   // If level provides its own test harness, use that
   if (level && typeof level.runUserCode === 'function') {
     try {
-      await level.runUserCode({ code, lang, editor, services, engine, ensurePyodide });
+      await level.runUserCode({ code, lang, editor, services, engine, ensurePyodide, runCpp });
     } catch (err) {
       editor.printOutput(String(err), 'error');
     }
@@ -106,7 +122,10 @@ editor.onRun(async (code, lang) => {
 
   // Generic fallback runner
   try {
-    if (lang === 'python') {
+    if (lang === 'cpp') {
+      const { out } = runCpp(code);
+      editor.printOutput(out ? out.trimEnd() : 'Code C++ chạy xong (không in gì ra).', 'success');
+    } else if (lang === 'python') {
       const pyodide = await ensurePyodide();
       const result = await pyodide.runPythonAsync(code);
       if (result !== undefined) {
