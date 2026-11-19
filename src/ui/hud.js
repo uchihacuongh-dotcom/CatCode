@@ -20,6 +20,6 @@ export class HUD {
   }
 
   render() {
-    this.root.textContent = `Level: ${this.levelTitle || '—'} | Coins: ${this.coins}`;
+    this.root.textContent = `Màn: ${this.levelTitle || '—'} | Xu: ${this.coins}`;
   }
 }

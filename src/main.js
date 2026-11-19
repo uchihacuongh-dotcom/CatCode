@@ -68,9 +68,9 @@ if (LevelRegistry.length > 0) {
   const first = LevelRegistry[0];
   levelManager.loadLevelById(first.id);
   hud.setLevelTitle(first.title);
-  editor.printOutput(`Loaded level: ${first.title}`, 'system');
+  editor.printOutput(`Đã tải màn: ${first.title}`, 'system');
 } else {
-  editor.printOutput('No levels registered in LevelRegistry.', 'error');
+  editor.printOutput('Chưa có màn chơi nào được đăng ký.', 'error');
 }
 
 // --- Pyodide setup for Python ---
@@ -78,9 +78,9 @@ let pyodideReadyPromise = null;
 async function ensurePyodide() {
   if (!pyodideReadyPromise) {
     if (typeof loadPyodide !== 'function') {
-      throw new Error('Pyodide script not loaded. Check your <script src="...pyodide.js"> tag.');
+      throw new Error('Chưa tải được Pyodide (trình chạy Python). Hãy kiểm tra kết nối mạng.');
     }
-    editor.printOutput('Loading Python runtime (Pyodide)...', 'dim');
+    editor.printOutput('Đang tải trình chạy Python (Pyodide), vui lòng đợi...', 'dim');
     pyodideReadyPromise = loadPyodide({
       indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/',
     });
@@ -92,7 +92,7 @@ async function ensurePyodide() {
 
 editor.onRun(async (code, lang) => {
   const level = engine.currentLevel;
-  editor.printOutput(`> Running code in ${lang.toUpperCase()}...`, 'dim');
+  editor.printOutput(`> Đang chạy code ${lang.toUpperCase()}...`, 'dim');
 
   // If level provides its own test harness, use that
   if (level && typeof level.runUserCode === 'function') {
@@ -112,14 +112,14 @@ editor.onRun(async (code, lang) => {
       if (result !== undefined) {
         editor.printOutput(String(result), 'success');
       } else {
-        editor.printOutput('Python code ran successfully (no result).', 'success');
+        editor.printOutput('Code Python chạy xong (không có kết quả trả về).', 'success');
       }
     } else {
       const result = new Function(code)();
       if (result !== undefined) {
         editor.printOutput(String(result), 'success');
       } else {
-        editor.printOutput('JS code ran successfully (no result).', 'success');
+        editor.printOutput('Code JS chạy xong (không có kết quả trả về).', 'success');
       }
     }
   } catch (err) {
@@ -133,7 +133,7 @@ editor.onHint(() => {
   if (level && typeof level.hint === 'function') {
     level.hint(editor);
   } else {
-    editor.printOutput('No hint available for this level.', 'dim');
+    editor.printOutput('Màn này chưa có gợi ý.', 'dim');
   }
 });
 
@@ -142,7 +142,7 @@ editor.onExplain(() => {
   if (level && typeof level.explain === 'function') {
     level.explain(editor);
   } else {
-    editor.printOutput('No explanation available for this level.', 'dim');
+    editor.printOutput('Màn này chưa có phần giải thích.', 'dim');
   }
 });
 

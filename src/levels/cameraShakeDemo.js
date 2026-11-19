@@ -5,11 +5,11 @@ import { createGround, createArrayBlocks, getBlockUnderCat } from '../game/level
 
 export const meta = {
   id: 'demo-camera-shake',
-  title: 'Camera Effects Demo',
+  title: 'Thử hiệu ứng camera',
   difficulty: 'easy',
   tags: ['demo', 'effects', 'camera'],
   mode: 'platform',
-  description: 'Jump and watch the camera shake! Trigger effects by reaching blocks.'
+  description: 'Nhảy lên và xem camera rung! Chạm vào các khối để kích hoạt hiệu ứng.'
 };
 
 export function createLevel() {
@@ -45,8 +45,8 @@ export function createLevel() {
       if (hud) hud.setLevelTitle(meta.title);
       if (editor) {
         editor.clearOutput();
-        editor.printOutput('🎮 Jump and move to trigger effects!', 'system');
-        editor.printOutput('Stand on each block to see different effects.', 'hint');
+        editor.printOutput('🎮 Hãy nhảy và di chuyển để kích hoạt hiệu ứng!', 'system');
+        editor.printOutput('Đứng lên từng khối để xem các hiệu ứng khác nhau.', 'hint');
       }
 
       // Store trigger state
@@ -70,28 +70,28 @@ export function createLevel() {
           switch (idx) {
             case 0:
               // Gentle camera shake
-              editor.printOutput('📷 Gentle shake!', 'info');
+              editor.printOutput('📷 Rung nhẹ!', 'info');
               cameraRig.shake(0.15, 0.25);
               engine.pulseExposure(0.2, 0.3);
               break;
 
             case 1:
               // Stronger shake
-              editor.printOutput('💥 Strong shake!', 'info');
+              editor.printOutput('💥 Rung mạnh!', 'info');
               cameraRig.shake(0.4, 0.5);
               engine.pulseExposure(0.35, 0.5);
               break;
 
             case 2:
               // Shake + flash
-              editor.printOutput('⚡ Shake + Flash!', 'info');
+              editor.printOutput('⚡ Rung + Chớp sáng!', 'info');
               cameraRig.shake(0.3, 0.4);
               engine.flashBackground(0xffff00, 0.3); // Yellow flash
               break;
 
             case 3:
               // Intense effect combo
-              editor.printOutput('🌪️ Intense combo!', 'info');
+              editor.printOutput('🌪️ Combo dữ dội!', 'info');
               cameraRig.shake(0.5, 0.6);
               engine.flashBackground(0xff6600, 0.4); // Orange flash
               engine.pulseExposure(0.5, 0.6);
@@ -99,7 +99,7 @@ export function createLevel() {
 
             case 4:
               // Ultimate effect
-              editor.printOutput('🎆 ULTIMATE EFFECT! You reached the end!', 'success');
+              editor.printOutput('🎆 HIỆU ỨNG TỐI THƯỢNG! Bạn đã đến cuối!', 'success');
               cameraRig.shake(0.6, 0.8);
               engine.flashBackground(0x50fa7b, 0.5); // Green flash
               engine.pulseExposure(0.6, 0.8);
@@ -116,18 +116,18 @@ export function createLevel() {
 
     hint(editor) {
       if (!editor) return;
-      editor.printOutput('💡 Hint: Jump onto each block in sequence to see different camera effects!', 'hint');
+      editor.printOutput('💡 Gợi ý: Nhảy lên từng khối theo thứ tự để xem các hiệu ứng camera khác nhau!', 'hint');
     },
 
     explain(editor) {
       if (!editor) return;
       editor.printOutput(
-        '📚 Explanation: This level demonstrates:\n' +
-        '  • Camera Rig: Smooth follow with configurable offset\n' +
-        '  • Camera Shake: cameraRig.shake(intensity, duration)\n' +
-        '  • Pulse Exposure: engine.pulseExposure(amount, duration)\n' +
-        '  • Flash Background: engine.flashBackground(color, duration)\n' +
-        '  • Fog Density: engine.setFogDensity(value)',
+        '📚 Giải thích: Màn này minh họa:\n' +
+        '  • Camera Rig: camera bám theo mượt mà, có thể chỉnh khoảng cách\n' +
+        '  • Camera Shake (rung): cameraRig.shake(intensity, duration)\n' +
+        '  • Pulse Exposure (nhấp nháy độ sáng): engine.pulseExposure(amount, duration)\n' +
+        '  • Flash Background (chớp nền): engine.flashBackground(color, duration)\n' +
+        '  • Fog Density (độ dày sương mù): engine.setFogDensity(value)',
         'system'
       );
     },

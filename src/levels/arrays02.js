@@ -5,11 +5,11 @@ import { createGround, createArrayBlocks } from '../game/levelUtils.js';
 
 export const meta = {
   id: 'arrays-02',
-  title: 'Arrays - Sum elements',
+  title: 'Mảng - Tính tổng các phần tử',
   difficulty: 'easy',
   tags: ['arrays', 'sum', 'basics'],
   mode: 'code',
-  description: 'Write a function that returns the sum of all elements in the array.'
+  description: 'Viết hàm trả về tổng của tất cả phần tử trong mảng.'
 };
 
 export function createLevel() {
@@ -44,26 +44,26 @@ export function createLevel() {
         editor.clearOutput();
         editor.printOutput(meta.title, 'system');
         editor.printOutput(meta.description);
-        editor.printOutput(`Example array in the world: [${sampleValues.join(', ')}]`);
+        editor.printOutput(`Mảng ví dụ trong thế giới game: [${sampleValues.join(', ')}]`);
         editor.printOutput(
-          'Task: Implement a function that returns the sum of all elements.',
+          'Nhiệm vụ: Viết hàm trả về tổng của tất cả phần tử.',
           'hint'
         );
         editor.printOutput(
-          'You can use either JavaScript or Python (switch at top-right).',
+          'Bạn có thể dùng JavaScript hoặc Python (đổi ở góc trên bên phải bảng code).',
           'dim'
         );
 
         // Default JS template
         editor.setLanguage('js');
         editor.setCode(
-`// Implement this function so that it returns
-// the sum of all elements in the array.
+`// Hãy viết hàm này để nó trả về
+// tổng của tất cả phần tử trong mảng.
 function sumArray(arr) {
   // TODO
 }
 
-// You can test locally:
+// Bạn có thể tự thử:
 console.log(sumArray([1, 2, 3])); // 6`
         );
       }
@@ -91,7 +91,7 @@ console.log(sumArray([1, 2, 3])); // 6`
         { input: [-1, 1, -2, 2], expected: 0 },
       ];
 
-      editor.printOutput('Running tests for sum of array...', 'dim');
+      editor.printOutput('Đang chạy các bài kiểm tra cho hàm tính tổng...', 'dim');
 
       try {
         if (lang === 'python') {
@@ -106,15 +106,15 @@ console.log(sumArray([1, 2, 3])); // 6`
             );
             if (result !== t.expected) {
               editor.printOutput(
-                `Test failed: sum_array(${JSON.stringify(t.input)}) ` +
-                `expected ${t.expected}, got ${result}`,
+                `Sai rồi: sum_array(${JSON.stringify(t.input)}) ` +
+                `cần ra ${t.expected}, nhưng nhận được ${result}`,
                 'error'
               );
               return;
             }
           }
 
-          editor.printOutput('All Python tests passed for sum_array!', 'success');
+          editor.printOutput('Đúng hết! Hàm sum_array (Python) vượt qua mọi bài kiểm tra!', 'success');
           return;
         } else {
           const wrapped = new Function(
@@ -122,7 +122,7 @@ console.log(sumArray([1, 2, 3])); // 6`
           );
           const fn = wrapped();
           if (!fn) {
-            editor.printOutput('Function sumArray(arr) is not defined.', 'error');
+            editor.printOutput('Chưa có hàm sumArray(arr).', 'error');
             return;
           }
 
@@ -130,15 +130,15 @@ console.log(sumArray([1, 2, 3])); // 6`
             const result = fn(t.input.slice());
             if (result !== t.expected) {
               editor.printOutput(
-                `Test failed: sumArray(${JSON.stringify(t.input)}) ` +
-                `expected ${t.expected}, got ${result}`,
+                `Sai rồi: sumArray(${JSON.stringify(t.input)}) ` +
+                `cần ra ${t.expected}, nhưng nhận được ${result}`,
                 'error'
               );
               return;
             }
           }
 
-          editor.printOutput('All JavaScript tests passed for sumArray!', 'success');
+          editor.printOutput('Đúng hết! Hàm sumArray (JavaScript) vượt qua mọi bài kiểm tra!', 'success');
         }
       } catch (err) {
         editor.printOutput(String(err), 'error');
@@ -148,7 +148,7 @@ console.log(sumArray([1, 2, 3])); // 6`
     hint(editor) {
       if (!editor) return;
       editor.printOutput(
-        'Hint: Initialize a variable to 0 and loop through the array, adding each element.',
+        'Gợi ý: Tạo một biến bằng 0, rồi duyệt qua mảng và cộng từng phần tử vào biến đó.',
         'hint'
       );
       editor.printOutput(
@@ -164,9 +164,9 @@ console.log(sumArray([1, 2, 3])); // 6`
     explain(editor) {
       if (!editor) return;
       editor.printOutput(
-        'Explanation: The sum is just the total of all elements.\n' +
-        'Iterate through the array, accumulate into a running total, and return it.\n' +
-        'Edge cases: empty array should give 0.',
+        'Giải thích: Tổng là kết quả cộng tất cả các phần tử lại.\n' +
+        'Hãy duyệt qua mảng, cộng dồn vào một biến tổng rồi trả về biến đó.\n' +
+        'Trường hợp đặc biệt: mảng rỗng thì tổng bằng 0.',
         'system'
       );
     }

@@ -13,12 +13,12 @@ import * as THREE from 'three';
 
 export const meta = {
   id: 'arrays-01',
-  title: 'The Bridge of Indexes',
+  title: 'Cây cầu chỉ số',
   difficulty: 'easy',
   tags: ['arrays', 'indexing', 'platform', 'story'],
   mode: 'platform',
   description:
-    'A bridge over the Data Abyss is unstable. Pass the tests to stabilize it, then cross to arr[2].'
+    'Cây cầu bắc qua Vực Dữ Liệu đang lung lay. Vượt qua các bài kiểm tra để làm nó vững lại, rồi đi tới arr[2].'
 };
 
 function makeLabelSprite(text, options = {}) {
@@ -241,7 +241,7 @@ export function createLevel() {
       for (let i = 0; i < blocks.length; i++) {
         const b = blocks[i];
         const isTarget = i === targetIndex;
-        const labelText = isTarget ? `arr[${i}]  (TARGET)` : `arr[${i}]`;
+        const labelText = isTarget ? `arr[${i}]  (ĐÍCH)` : `arr[${i}]`;
 
         const label = makeLabelSprite(labelText, {
           textColor: isTarget ? '#50fa7b' : '#f8f8f2',
@@ -256,7 +256,7 @@ export function createLevel() {
 
       // --- 9) Gate tooltip sprites: locked and open states ---
       if (gateX !== null) {
-        gateLabelLocked = makeLabelSprite('⛔ GATE LOCKED – solve code', {
+        gateLabelLocked = makeLabelSprite('⛔ CỔNG ĐANG KHÓA – hãy giải bài code', {
           textColor: '#ff5555',
           bgColor: 'rgba(40,5,10,0.95)',
           borderColor: '#ff5555',
@@ -265,7 +265,7 @@ export function createLevel() {
         gateLabelLocked.renderOrder = 1000;
         engine.scene.add(gateLabelLocked);
 
-        gateLabelOpen = makeLabelSprite('✅ GATE OPEN – cross to arr[2]', {
+        gateLabelOpen = makeLabelSprite('✅ CỔNG ĐÃ MỞ – đi tới arr[2]', {
           textColor: '#50fa7b',
           bgColor: 'rgba(5,20,10,0.95)',
           borderColor: '#50fa7b',
@@ -307,43 +307,43 @@ export function createLevel() {
 
       if (editor) {
         editor.clearOutput();
-        editor.printOutput('✨ Story: The Bridge of Indexes ✨', 'system');
+        editor.printOutput('✨ Câu chuyện: Cây cầu chỉ số ✨', 'system');
         editor.printOutput(
-          'A narrow bridge spans the Data Abyss. Each tile is an element in an array.',
+          'Một cây cầu hẹp bắc qua Vực Dữ Liệu. Mỗi ô là một phần tử của mảng.',
           'info'
         );
         editor.printOutput(
-          `World array: [${values.join(', ')}] (indices 0..${values.length - 1})`,
+          `Mảng trong thế giới game: [${values.join(', ')}] (chỉ số từ 0 đến ${values.length - 1})`,
           'info'
         );
         editor.printOutput(
-          'Look above the tiles: each one is labeled arr[i]. The green one is your target.',
+          'Nhìn phía trên các ô: mỗi ô có nhãn arr[i]. Ô màu xanh lá là đích của bạn.',
           'hint'
         );
         editor.printOutput(
-          'Code gate: the right side of the bridge is blocked until your code passes all tests.',
+          'Cổng code: nửa bên phải cây cầu bị chặn cho đến khi code của bạn qua hết các bài kiểm tra.',
           'hint'
         );
         editor.printOutput(
-          'Movement: after the gate opens, reach arr[2] (the third tile).',
+          'Di chuyển: sau khi cổng mở, hãy đi tới arr[2] (ô thứ ba).',
           'hint'
         );
 
         editor.setLanguage('js');
         editor.setCode(
-`// The Bridge of Indexes
-// Implement getThirdElement(arr) so it returns arr[2].
-// Once tests pass, the gate in the bridge will unlock.
+`// Cây cầu chỉ số
+// Hãy viết hàm getThirdElement(arr) để nó trả về arr[2].
+// Khi vượt qua các bài kiểm tra, cổng trên cầu sẽ mở.
 
 function getThirdElement(arr) {
-  // TODO: return the third element (index 2)
+  // TODO: trả về phần tử thứ ba (chỉ số 2)
 }
 
-// Quick test:
-// console.log(getThirdElement([10, 20, 30, 40, 50])); // should be 30
+// Thử nhanh:
+// console.log(getThirdElement([10, 20, 30, 40, 50])); // kết quả phải là 30
 
 def get_third_element(arr):
-  # TODO in Python
+  # TODO: viết bằng Python
   # return arr[2]
 `
         );
@@ -365,7 +365,7 @@ def get_third_element(arr):
 
         if (!gateMessageShown) {
           editor.printOutput(
-            '⛔ The bridge is blocked here. Solve the code task to unlock the gate.',
+            '⛔ Cầu bị chặn ở đây. Hãy giải bài code để mở cổng.',
             'hint'
           );
           gateMessageShown = true;
@@ -398,7 +398,7 @@ def get_third_element(arr):
         if (b.index === targetIndex) {
           if (!solvedCode) {
             editor.printOutput(
-              'You reached arr[2], but the gate should have been locked. Try solving the code first.',
+              'Bạn đã tới arr[2], nhưng cổng lẽ ra phải đang khóa. Hãy giải bài code trước.',
               'hint'
             );
             return;
@@ -406,7 +406,7 @@ def get_third_element(arr):
 
           solvedMovement = true;
           editor.printOutput(
-            `Movement success: you reached arr[${b.index}] = ${b.value} on the far side.`,
+            `Di chuyển thành công: bạn đã tới arr[${b.index}] = ${b.value} ở bờ bên kia.`,
             'success'
           );
 
@@ -414,7 +414,7 @@ def get_third_element(arr):
           if (hud) hud.setCoins(services.coins);
         } else {
           editor.printOutput(
-            `You are on arr[${b.index}] = ${b.value}. That is not arr[${targetIndex}].`,
+            `Bạn đang đứng trên arr[${b.index}] = ${b.value}. Đây chưa phải arr[${targetIndex}].`,
             'info'
           );
         }
@@ -423,7 +423,7 @@ def get_third_element(arr):
       // --- 4) Final reward once both movement + code are done ---
       if (allSolved()) {
         editor.printOutput(
-          'All tests passed and the bridge is fully stable. +10 coins.',
+          'Đã qua hết các bài kiểm tra, cây cầu đã vững chắc. +10 xu.',
           'system'
         );
         if (!services._arrays01Rewarded) {
@@ -441,7 +441,7 @@ def get_third_element(arr):
         { input: [7, 8, 9, 10], expected: 9 },
       ];
 
-      editor.printOutput('Running level tests...', 'dim');
+      editor.printOutput('Đang chạy các bài kiểm tra của màn...', 'dim');
 
       try {
         if (lang === 'python') {
@@ -455,15 +455,15 @@ def get_third_element(arr):
             );
             if (result !== t.expected) {
               editor.printOutput(
-                `Test failed: get_third_element(${JSON.stringify(t.input)}) ` +
-                  `expected ${t.expected}, got ${result}`,
+                `Sai rồi: get_third_element(${JSON.stringify(t.input)}) ` +
+                  `cần ra ${t.expected}, nhưng nhận được ${result}`,
                 'error'
               );
               return;
             }
           }
 
-          editor.printOutput('All Python tests passed!', 'success');
+          editor.printOutput('Đúng hết các bài kiểm tra Python!', 'success');
           solvedCode = true;
           return;
         } else {
@@ -473,7 +473,7 @@ def get_third_element(arr):
           );
           const fn = wrapped();
           if (!fn) {
-            editor.printOutput('Function getThirdElement(arr) is not defined.', 'error');
+            editor.printOutput('Chưa có hàm getThirdElement(arr).', 'error');
             return;
           }
 
@@ -481,8 +481,8 @@ def get_third_element(arr):
             const result = fn(t.input.slice());
             if (result !== t.expected) {
               editor.printOutput(
-                `Test failed: getThirdElement(${JSON.stringify(t.input)}) ` +
-                  `expected ${t.expected}, got ${result}`,
+                `Sai rồi: getThirdElement(${JSON.stringify(t.input)}) ` +
+                  `cần ra ${t.expected}, nhưng nhận được ${result}`,
                 'error'
               );
               return;
@@ -490,7 +490,7 @@ def get_third_element(arr):
           }
 
           editor.printOutput(
-            'All JavaScript tests passed! The bridge gate unlocks.',
+            'Đúng hết các bài kiểm tra JavaScript! Cổng trên cầu đã mở.',
             'success'
           );
           solvedCode = true;
@@ -547,7 +547,7 @@ def get_third_element(arr):
     hint(editor) {
       if (!editor) return;
       editor.printOutput(
-        'Hint: arrays are 0-indexed. Index 2 is the third element.',
+        'Gợi ý: mảng đánh chỉ số từ 0. Chỉ số 2 là phần tử thứ ba.',
         'hint'
       );
       editor.printOutput(
@@ -559,7 +559,7 @@ def get_third_element(arr):
         'dim'
       );
       editor.printOutput(
-        'Look at the labels above the tiles: the green "arr[2] (TARGET)" is your goal.',
+        'Nhìn các nhãn phía trên ô: nhãn xanh lá "arr[2] (ĐÍCH)" là mục tiêu của bạn.',
         'dim'
       );
     },
@@ -567,8 +567,8 @@ def get_third_element(arr):
     explain(editor) {
       if (!editor) return;
       editor.printOutput(
-        'Explanation: arr[2] refers to the third element. ' +
-          'The in-world labels mirror the array indices visually: arr[0], arr[1], arr[2], ...',
+        'Giải thích: arr[2] là phần tử thứ ba. ' +
+          'Các nhãn trong game thể hiện chỉ số của mảng: arr[0], arr[1], arr[2], ...',
         'system'
       );
     }

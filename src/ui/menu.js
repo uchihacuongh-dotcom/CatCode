@@ -1,6 +1,9 @@
 // src/ui/menu.js
 // Level select / problem browser UI for CatCode.
 
+const DIFF_VI = { easy: 'Dễ', medium: 'Trung bình', hard: 'Khó' };
+const MODE_VI = { platform: 'Đi cảnh', code: 'Viết code' };
+
 export function initMenu({ levelManager, levelRegistry, terminal, hud }) {
   const toggleBtn = document.getElementById('level-select-toggle');
   const panel = document.getElementById('level-select-panel');
@@ -37,7 +40,7 @@ export function initMenu({ levelManager, levelRegistry, terminal, hud }) {
 
     if (items.length === 0) {
       const empty = document.createElement('div');
-      empty.textContent = 'No levels match your search.';
+      empty.textContent = 'Không có màn chơi nào khớp với tìm kiếm.';
       empty.style.opacity = '0.7';
       empty.style.fontSize = '11px';
       listEl.appendChild(empty);
@@ -63,8 +66,8 @@ export function initMenu({ levelManager, levelRegistry, terminal, hud }) {
           ${entry.description || ''}
         </div>
         <div style="font-size:10px; opacity:0.7;">
-          ${entry.difficulty ? `Difficulty: ${entry.difficulty}` : ''}
-          ${entry.mode ? ` · Mode: ${entry.mode}` : ''}
+          ${entry.difficulty ? `Độ khó: ${DIFF_VI[entry.difficulty] || entry.difficulty}` : ''}
+          ${entry.mode ? ` · Kiểu chơi: ${MODE_VI[entry.mode] || entry.mode}` : ''}
         </div>
         <div style="font-size:10px; opacity:0.7; margin-top:2px;">
           ${(entry.tags || []).map((t) => `#${t}`).join(' ')}
@@ -74,14 +77,14 @@ export function initMenu({ levelManager, levelRegistry, terminal, hud }) {
       card.addEventListener('click', () => {
         if (currentMeta && currentMeta.id === entry.id) {
           // Already on this level
-          if (terminal) terminal.log(`Already playing: ${entry.title || entry.id}`);
+          if (terminal) terminal.log(`Bạn đang chơi màn này rồi: ${entry.title || entry.id}`);
           return;
         }
 
         levelManager.loadLevelById(entry.id);
 
         if (terminal) {
-          terminal.system(`Switched to level: ${entry.title || entry.id}`);
+          terminal.system(`Đã chuyển sang màn: ${entry.title || entry.id}`);
         }
 
         if (hud && entry.title) {

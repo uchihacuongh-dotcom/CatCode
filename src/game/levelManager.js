@@ -12,9 +12,9 @@ export class LevelManager {
     const entry = LevelRegistry.find((l) => l.id === id);
     if (!entry) {
       if (this.services.terminal) {
-        this.services.terminal.error(`Level not found: ${id}`);
+        this.services.terminal.error(`Không tìm thấy màn chơi: ${id}`);
       } else {
-        console.error(`Level not found: ${id}`);
+        console.error(`Không tìm thấy màn chơi: ${id}`);
       }
       return;
     }

@@ -46,7 +46,7 @@ export class CodeEditor {
       if (this.runHandler) {
         this.runHandler(this.getCode(), this.currentLang);
       } else {
-        this.printOutput('(no run handler attached)', 'dim');
+        this.printOutput('(chưa gắn chức năng chạy code)', 'dim');
       }
     });
 

@@ -68,7 +68,7 @@ export function initShop({ skins, hud, services, engine }) {
             <div style="font-size:10px; color:#bbb;">${skin.description}</div>
           </div>
           <div style="text-align:right; font-size:11px;">
-            ${skin.price > 0 ? `${skin.price} 🪙` : '<span style="color:#50fa7b;">Owned</span>'}
+            ${skin.price > 0 ? `${skin.price} 🪙` : '<span style="color:#50fa7b;">Đã sở hữu</span>'}
           </div>
         </div>
       `;
@@ -84,13 +84,13 @@ export function initShop({ skins, hud, services, engine }) {
       btn.style.color = '#f8f8f2';
 
       if (equipped) {
-        btn.textContent = 'Equipped ✓';
+        btn.textContent = 'Đang dùng ✓';
         btn.disabled = true;
         btn.style.opacity = '0.7';
       } else if (!unlocked && skin.price > 0) {
-        btn.textContent = 'Unlock & Equip';
+        btn.textContent = 'Mở khóa & dùng';
       } else {
-        btn.textContent = 'Equip';
+        btn.textContent = 'Dùng';
       }
 
       btn.addEventListener('click', () => {
@@ -98,7 +98,7 @@ export function initShop({ skins, hud, services, engine }) {
 
         if (!unlocked && skin.price > 0) {
           if (coins < skin.price) {
-            services.editor?.printOutput(`Not enough coins for ${skin.name}.`, 'error');
+            services.editor?.printOutput(`Không đủ xu để mua ${skin.name}.`, 'error');
             return;
           }
           services.coins = coins - skin.price;
@@ -117,7 +117,7 @@ export function initShop({ skins, hud, services, engine }) {
         }
 
         // small feedback
-        services.editor?.printOutput(`Equipped cat skin: ${skin.name}`, 'success');
+        services.editor?.printOutput(`Đã dùng trang phục mèo: ${skin.name}`, 'success');
 
         renderCatSkins();
       });
@@ -149,7 +149,7 @@ export function initShop({ skins, hud, services, engine }) {
             <div style="font-size:10px; color:#bbb;">${skin.description}</div>
           </div>
           <div style="text-align:right; font-size:11px;">
-            ${skin.price > 0 ? `${skin.price} 🪙` : '<span style="color:#50fa7b;">Owned</span>'}
+            ${skin.price > 0 ? `${skin.price} 🪙` : '<span style="color:#50fa7b;">Đã sở hữu</span>'}
           </div>
         </div>
       `;
@@ -165,13 +165,13 @@ export function initShop({ skins, hud, services, engine }) {
       btn.style.color = '#f8f8f2';
 
       if (equipped) {
-        btn.textContent = 'Equipped ✓';
+        btn.textContent = 'Đang dùng ✓';
         btn.disabled = true;
         btn.style.opacity = '0.7';
       } else if (!unlocked && skin.price > 0) {
-        btn.textContent = 'Unlock & Equip';
+        btn.textContent = 'Mở khóa & dùng';
       } else {
-        btn.textContent = 'Equip';
+        btn.textContent = 'Dùng';
       }
 
       btn.addEventListener('click', () => {
@@ -179,7 +179,7 @@ export function initShop({ skins, hud, services, engine }) {
 
         if (!unlocked && skin.price > 0) {
           if (coins < skin.price) {
-            services.editor?.printOutput(`Not enough coins for ${skin.name}.`, 'error');
+            services.editor?.printOutput(`Không đủ xu để mua ${skin.name}.`, 'error');
             return;
           }
           services.coins = coins - skin.price;
@@ -188,7 +188,7 @@ export function initShop({ skins, hud, services, engine }) {
         }
 
         skins.equipArena(skin.id);
-        services.editor?.printOutput(`Equipped arena skin: ${skin.name}`, 'success');
+        services.editor?.printOutput(`Đã dùng giao diện sàn: ${skin.name}`, 'success');
 
         // Arena skin will be applied next time a level builds
         // (levels call createGround/createArrayBlocks with current arena skin)

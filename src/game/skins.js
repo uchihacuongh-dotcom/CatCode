@@ -5,8 +5,8 @@ const STORAGE_KEY = 'catcode_skins_v1';
 const CAT_SKINS = [
   {
     id: 'cat_default',
-    name: 'Default Fur',
-    description: 'Standard debugging kitty.',
+    name: 'Bộ lông mặc định',
+    description: 'Chú mèo gỡ lỗi chuẩn mực.',
     price: 0,
     baseColor: 0x222222,
     eyeColor: 0x00ff00,
@@ -14,8 +14,8 @@ const CAT_SKINS = [
   },
   {
     id: 'cat_midnight',
-    name: 'Midnight Panther',
-    description: 'For stealthy late-night coding.',
+    name: 'Báo đêm',
+    description: 'Dành cho những đêm code lặng lẽ.',
     price: 10,
     baseColor: 0x050509,
     eyeColor: 0x8be9fd,
@@ -23,8 +23,8 @@ const CAT_SKINS = [
   },
   {
     id: 'cat_neon',
-    name: 'Neon Hacker',
-    description: 'Glows with pure stack trace energy.',
+    name: 'Hacker Neon',
+    description: 'Tỏa sáng với năng lượng của stack trace.',
     price: 10,
     baseColor: 0xbd93f9,
     eyeColor: 0xff79c6,
@@ -32,8 +32,8 @@ const CAT_SKINS = [
   },
   {
     id: 'pink_princess',
-    name: 'Princess',
-    description: 'Princess power.',
+    name: 'Công chúa',
+    description: 'Sức mạnh của công chúa.',
     price: 10,
     baseColor: 0xFFC0CB,
     eyeColor: 0xFFFFFF,
@@ -44,8 +44,8 @@ const CAT_SKINS = [
 const ARENA_SKINS = [
   {
     id: 'arena_default',
-    name: 'Classic Grid',
-    description: 'Plain but dependable.',
+    name: 'Lưới cổ điển',
+    description: 'Đơn giản nhưng đáng tin cậy.',
     price: 0,
     groundColor: 0xffffff,
     blockColor: 0x3a3a4a,
@@ -53,8 +53,8 @@ const ARENA_SKINS = [
   },
   {
     id: 'arena_synthwave',
-    name: 'Synthwave Night',
-    description: 'Neon gradients and late-night grinding.',
+    name: 'Đêm Synthwave',
+    description: 'Màu neon chuyển sắc cho những đêm cày code.',
     price: 10,
     groundColor: 0x1a1a2e,
     blockColor: 0x282a36,
